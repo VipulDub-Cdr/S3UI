@@ -16,6 +16,24 @@ const Dashboard: React.FC = () => {
         }
         fetchData();
     }, [])
+
+    // React.useEffect(() => {
+    //     async function fetchOnClick(){
+    //         const response = await fetch("/api/pathObjects",{
+    //             method: 'POST',
+    //             headers:{
+    //                 'Content-Type': 'application/json',
+    //             },
+    //             body: JSON.stringify({
+    //                 prefix: path,
+    //             }),
+    //         });
+
+    //         const data = response.json();
+    //         console.log(data);
+    //     }
+    // }, [])
+
     React.useEffect(() => {
         console.log(files);
         console.log(folders);
@@ -29,7 +47,7 @@ const Dashboard: React.FC = () => {
                     <button>{item}</button>
                 </div>
             ))}
-            <h1 className='font-bold'>Folders(s):</h1>
+            <h1 className='font-bold'>Folders:</h1>
             {folders.map((item:string, index:number) => (
                 <div key={index}>
                     <button>{item}</button>
