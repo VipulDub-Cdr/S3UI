@@ -24,21 +24,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-   <ClerkProvider>
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <SignedOut>
-          <div className="min-h-screen min-w-screen flex justify-center items-center">
-            <SignIn routing="hash" />
-          </div>
-        </SignedOut>
-        <SignedIn>
-          {children}
-        </SignedIn>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ClerkProvider>
+          <SignedOut>
+            <div className="min-h-screen min-w-screen flex justify-center items-center">
+              <SignIn routing="hash" />
+            </div>
+          </SignedOut>
+          <SignedIn>
+            {children}
+          </SignedIn>
+        </ClerkProvider>
       </body>
     </html>
-   </ClerkProvider>
   );
 }

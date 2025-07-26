@@ -1,0 +1,29 @@
+"CommonPrefixes": [
+  {
+    "Prefix": "user-ironman/family/"
+  }
+]
+"Contents": [
+  {
+    "Key": "user-ironman/ironman.jpeg",
+    ...
+  }
+]
+Contents: user-ironman/ folder ke andar jo directly files hain, wo yahan aayengi (jaise: ironman.jpeg)
+CommonPrefixes: user-ironman/ ke andar jo folders hain (jaise: family/), wo is list me aayenge
+
+// to traverse the CommonPrefixes (folders)
+CPList = obj.respsend.CommonPrefixes;
+// console.log(CPList);
+CPList.forEach((ele)=>{
+    console.log(ele.Prefix)
+})
+
+
+// to traverse the contents (files)
+lst = obj.respsend.Contents
+lst.forEach((ele)=>{
+    console.log(ele.Key)
+})
+
+to upload the file - Key: `${userId}/filename.jpg` by using the PutObjectCommand
