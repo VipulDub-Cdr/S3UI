@@ -27,3 +27,5 @@ lst.forEach((ele)=>{
 })
 
 to upload the file - Key: `${userId}/filename.jpg` by using the PutObjectCommand
+
+files ?? [] is a nullish coalescing operation
