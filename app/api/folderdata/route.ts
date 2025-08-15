@@ -12,7 +12,7 @@ const client = new S3Client({
 export async function POST(req: NextRequest){
     const body = await req.json();
     const prefix = body.prefix;
-    console.log(prefix)
+    // console.log(prefix)
     const command = new ListObjectsCommand({
         Bucket: "vipuls3-bucket",
         Delimiter: '/',

@@ -1,6 +1,6 @@
 "use client"
 import * as React from 'react'
-
+import Buttons from './bttn'
 const Dashboard: React.FC = () => {
     const [files, setfiles] = React.useState<any[]>([])
     const [folders, setfolders] = React.useState<any[]>([])
@@ -58,6 +58,23 @@ const Dashboard: React.FC = () => {
         setfolders(data.folderlist)
     }
 
+    async function callDownloadroute(item: String){
+        const response = await fetch("/api/download",{
+            method: 'POST',
+            headers:{
+                'Content-Type':'application/json',
+            },
+            body: JSON.stringify({
+                prefix: item,
+            })
+        })
+        const data = await response.json();
+        const url = data.url;
+        // console.log(data);
+        if(url){
+            window.open(url,'_blank')
+        }
+    }
 
     // Testing part
     // React.useEffect(() => {
@@ -72,7 +89,7 @@ const Dashboard: React.FC = () => {
 
     return <>
         <div>
-            <button type="button" onClick={()=>fetchOnClick(getPreviousPath(path))}>Go Back</button>
+            <button type="button" onClick={()=>fetchOnClick(getPreviousPath(path))} className='px-2 mx-3 my-1 border-2'>Go Back</button>
         </div>
         <div className="border-2 mx-3 py-2 px-1">
             <h1 className="font-bold">Path: </h1>
@@ -85,8 +102,8 @@ const Dashboard: React.FC = () => {
                 <div className='flex justfiy-start gap-6'>
                     <div key={index}>
                         <i>{item}</i>
+                        <button onClick={()=>callDownloadroute(item)} className='ml-6 p-1 border-2 border-white hover:cursor-pointer'>Download</button>
                     </div>
-                    
                 </div>
             ))}
 
