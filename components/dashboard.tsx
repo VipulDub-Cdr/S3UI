@@ -6,6 +6,7 @@ const Dashboard: React.FC = () => {
     const [folders, setfolders] = React.useState<any[]>([])
     const [path, setpath] = React.useState<String>("Loading...");
     const [prevpath, setprevpath] = React.useState<String>("");
+    const [uploading, setUploading] = React.useState<boolean>(false)
 
     // It takes the current path as a prop and returns the previous path
     function getPreviousPath(path: String){     
@@ -18,7 +19,7 @@ const Dashboard: React.FC = () => {
         for(let i = 0;i<len-2;i++){
             localprevPath += arr[i]+"/";
         }
-        console.log(localprevPath)
+        // console.log(localprevPath)
         return localprevPath;
     }
 
@@ -33,7 +34,7 @@ const Dashboard: React.FC = () => {
             setfolders(res.folderlist);
         }
         fetchData();
-    }, [])
+    },[])
 
     // It calls the API and API returns the files and folders associted with the item path
     async function fetchOnClick(item: String) {
@@ -55,6 +56,7 @@ const Dashboard: React.FC = () => {
         const data = await response.json();
         setfiles(data.files)
         setpath(item)
+        // console.log(path);
         setfolders(data.folderlist)
     }
 
@@ -76,6 +78,44 @@ const Dashboard: React.FC = () => {
         }
     }
 
+    async function handleFileChange(e:React.ChangeEvent<HTMLInputElement>){
+        // console.log(e.target.files?.[0]);
+        const file = e.target.files?.[0];
+        // console.log(file.name);
+        // console.log(file.type);
+        if(!file) return;
+        setUploading(true);
+
+        const res = await fetch("/api/upload",{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body: JSON.stringify({
+                fileName : file.name,
+                fileType : file.type,
+                path : path,
+            })
+        })
+
+        const {uploadURl} = await res.json();
+        // console.log(typeof uploadURl);
+        const upload = await fetch(uploadURl,{
+            method:"PUT",
+            headers: {"Content-Type":file.type},
+            body: file,
+        })
+        // console.log(upload);
+
+        setUploading(false);
+
+        if(upload.ok) alert("Upload successfull")
+        else alert("upload failed")
+
+        e.target.value = "";
+
+        fetchOnClick(path);
+    }
+
+
     // Testing part
     // React.useEffect(() => {
     //     if (files && folders) {
@@ -87,9 +127,17 @@ const Dashboard: React.FC = () => {
     // }, [files, folders])
 
 
+    // React.useEffect(()=>{
+    //     console.log(path);
+    // },[path]);
+
     return <>
-        <div>
-            <button type="button" onClick={()=>fetchOnClick(getPreviousPath(path))} className='px-2 mx-3 my-1 border-2'>Go Back</button>
+        <div className="flex flex-row">
+            <button type="button" onClick={()=>fetchOnClick(getPreviousPath(path))} className='px-2 mx-3 my-1 border-2 hover:cursor-pointer'>Go Back</button>
+            <div>
+            <input type="file"  onChange={handleFileChange} disabled={uploading} className="border hover:cursor-pointer"/>
+            {uploading && <p>Uploading....</p>}
+            </div>
         </div>
         <div className="border-2 mx-3 py-2 px-1">
             <h1 className="font-bold">Path: </h1>
@@ -97,6 +145,7 @@ const Dashboard: React.FC = () => {
         </div>
 
         <div className="border-2 mx-3 py-2 px-1 my-2">
+            {/* displaying all the files */}
             {files?.length > 0 && <h1 className="font-bold">Files:</h1>}
             {(files ?? []).map((item: string, index: number) => (
                 <div className='flex justfiy-start gap-6'>
@@ -106,11 +155,11 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
             ))}
-
+            {/* displaying all the folders */}
             {folders?.length > 0 && <h1 className="font-bold">Folders:</h1>}
             {(folders ?? []).map((item: string, index: number) => (
                 <div key={index}>
-                    <button onClick={() => fetchOnClick(item)}>{item}</button>
+                    <button onClick={() => fetchOnClick(item)} className="hover:cursor-pointer">{item}</button>
                 </div>
             ))}
         </div>

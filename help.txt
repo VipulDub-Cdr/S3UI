@@ -29,3 +29,25 @@ lst.forEach((ele)=>{
 to upload the file - Key: `${userId}/filename.jpg` by using the PutObjectCommand
 
 files ?? [] is a nullish coalescing operation
+
+Ek cheez yaad rakhna when you are putting this app into production update the cors policy 
+"AllowedOrigins": ["https://vipulapp.com"]
+
+But for the development environment
+Go to AWS Console → S3 → your bucket (vipuls3-bucket).
+
+Open Permissions → CORS configuration.
+
+Paste this JSON:[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["PUT", "POST", "GET"],
+    "AllowedOrigins": ["http://localhost:3000"],
+    "ExposeHeaders": []
+  }
+]
+
+
+AWS CLi commands
+aws s3 ls
+aws s3 ls <bucket-name>
