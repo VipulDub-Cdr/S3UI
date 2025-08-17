@@ -78,7 +78,7 @@ const Dashboard: React.FC = () => {
         }
     }
 
-    async function handleFileChange(e:React.ChangeEvent<HTMLInputElement>){
+    async function uploadFile(e:React.ChangeEvent<HTMLInputElement>){
         // console.log(e.target.files?.[0]);
         const file = e.target.files?.[0];
         // console.log(file.name);
@@ -107,14 +107,29 @@ const Dashboard: React.FC = () => {
 
         setUploading(false);
 
-        if(upload.ok) alert("Upload successfull")
-        else alert("upload failed")
+        // if(upload.ok) alert("Upload successfull")
+        // else alert("upload failed")
 
         e.target.value = "";
 
         fetchOnClick(path);
     }
 
+    async function deleteFile(item: String){
+
+        const response = await fetch("/api/delete",{
+            method:"DELETE",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify({
+                "path":item,
+            })
+        })
+
+        // if(response) alert("Object deleted successfully")
+        // else alert("Can't delete object")
+        // console.log(path);
+        fetchOnClick(path);
+    }
 
     // Testing part
     // React.useEffect(() => {
@@ -134,9 +149,9 @@ const Dashboard: React.FC = () => {
     return <>
         <div className="flex flex-row">
             <button type="button" onClick={()=>fetchOnClick(getPreviousPath(path))} className='px-2 mx-3 my-1 border-2 hover:cursor-pointer'>Go Back</button>
-            <div>
-            <input type="file"  onChange={handleFileChange} disabled={uploading} className="border hover:cursor-pointer"/>
-            {uploading && <p>Uploading....</p>}
+            <div className="flex flex-row gap-2">
+                <input type="file"  onChange={uploadFile} disabled={uploading} className="border-2 hover:cursor-pointer p-1"/>
+                {uploading && <p>Uploading....</p>}
             </div>
         </div>
         <div className="border-2 mx-3 py-2 px-1">
@@ -152,6 +167,7 @@ const Dashboard: React.FC = () => {
                     <div key={index}>
                         <i>{item}</i>
                         <button onClick={()=>callDownloadroute(item)} className='ml-6 p-1 border-2 border-white hover:cursor-pointer'>Download</button>
+                        <button type="button" className="mx-1 border-2 p-1 hover:cursor-pointer" onClick={()=>deleteFile(item)}>Delete</button>
                     </div>
                 </div>
             ))}

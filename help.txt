@@ -51,3 +51,10 @@ Paste this JSON:[
 AWS CLi commands
 aws s3 ls
 aws s3 ls <bucket-name>
+
+Use Accertinity for components
+
+redirect to route on any event
+{redirect("/signedIn/page")}
+
+hero page - Flip words
