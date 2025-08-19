@@ -47,6 +47,17 @@ Paste this JSON:[
   }
 ]
 
+[
+  {
+    "AllowedHeaders": ["*"],
+    "AllowedMethods": ["PUT", "POST", "GET"],
+    "AllowedOrigins": [
+      "https://app.yourdomain.com",
+      "https://yourdomain.com"
+    ],
+    "ExposeHeaders": ["ETag"]
+  }
+]
 
 AWS CLi commands
 aws s3 ls
@@ -58,3 +69,88 @@ redirect to route on any event
 {redirect("/signedIn/page")}
 
 hero page - Flip words
+
+Expandable navbar - 
+<div class="m-10 flex flex-row items-center justify-center">
+  <div class="h-15 w-15 rounded-full border-2 border-blue-300 shadow-lg shadow-blue-300 transition-all delay-100 duration-1100 ease-in-out hover:w-100">
+    <div class="h-12 w-12 flex flex-row justify-items-center ml-1 mt-1 rounded-full border-2 border-blue-300 shadow-lg shadow-blue-300 transition-all delay-100 duration-1100 ease-in-out">
+      <img class="rounded-full object-cover" src="https://media.istockphoto.com/id/1130281623/vector/clouds-isolate-blue-color-tone-icon-logo-vector-style-background-illustration.jpg?s=612x612&w=0&k=20&c=yZEmDGI-KU5-miWbKCOqcF69jYaqVFYrwIOzepX8uoA=" alt="">
+    </div>
+  </div>
+</div>
+
+
+The biggest problem - 🔹 Option 2: Run Next.js with HTTPS Locally
+
+If you want to keep localhost, you can run Next.js with HTTPS:
+
+pnpm dlx next dev --turbo --experimental-https
+
+
+Then visit from mobile at:
+
+https://<your-computer-ip>:3000
+
+
+⚠️ You may need to accept the self-signed certificate on your phone.
+//ignore below line
+✅ Recommended: Option 1 (.lcl.dev) because it’s smoother — no SSL warning and it’s Clerk’s official dev setup.
+
+Summary of this - 
+
+🔹 The Problem
+
+On desktop, your app worked fine after sign-in.
+
+On mobile, after signing in → you saw a blank screen until refresh.
+
+Reason: Clerk sessions require HTTPS to share cookies/session tokens properly across devices.
+
+When running locally on http://localhost:3000, mobile devices can’t access your session correctly → that’s why it broke on mobile but worked on desktop.
+
+🔹 What Option-2 (Run Next.js with HTTPS Locally) Did
+
+You set up your local Next.js dev server to run with HTTPS (TLS certificates) instead of plain HTTP.
+
+Your local app now runs at:
+
+https://localhost:3000
+or
+https://<your-local-ip>:3000
+
+
+Because it’s HTTPS, Clerk could securely set and share session cookies on both desktop and mobile.
+
+That fixed the problem: mobile could now load the navbar/session without requiring a refresh.
+
+✅ Summary:
+The issue was session cookies not being handled on mobile because you were on HTTP.
+By enabling HTTPS locally, you simulated a real secure environment → Clerk session handling started working correctly across devices.
+
+
+<div className="border-2 mx-3 py-2 px-1 my-2">
+
+            {/* displaying all the files */}
+            
+            {files?.length > 0 && <h1 className="font-bold">Files:</h1>}
+            {(files ?? []).map((item: string, index: number) => (
+                <div className=''>
+                    <div key={index}>
+                        <i>{item}</i>
+                        {/* Download button */}
+                        <button onClick={()=>callDownloadroute(item)} className=''>Download</button>
+                        {/* Delete button */}
+                        <button type="button" className="" onClick={()=>deleteFile(item)}>Delete</button>
+                    </div>
+                </div>
+            ))}
+
+            {/* displaying all the folders */}
+            
+            {folders?.length > 0 && <h1 className="font-bold">Folders:</h1>}
+            {(folders ?? []).map((item: string, index: number) => (
+                <div key={index}>
+                    <button onClick={() => fetchOnClick(item)} className="hover:cursor-pointer">{item}</button>
+                </div>
+            ))}
+        </div>
