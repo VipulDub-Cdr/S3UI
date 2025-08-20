@@ -2,6 +2,8 @@ import mongoose, { Schema, Document, model, models } from "mongoose";
 import { NextRequest, NextResponse } from "next/server";
 import {useUser} from '@clerk/nextjs'
 
+const dbURL = process.env.DB_URL
+
 interface Iuser extends Document {
   userid: string;
 }
@@ -11,7 +13,7 @@ const userschema = new Schema<Iuser>({
 });
 
 async function connectDB() {
-    await mongoose.connect("mongodb://localhost:27017/mydb");
+    await mongoose.connect(dbURL!);
 }
 
 connectDB();

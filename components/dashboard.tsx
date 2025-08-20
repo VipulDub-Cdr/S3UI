@@ -1,13 +1,15 @@
 "use client"
 import * as React from 'react'
 import Buttons from './bttn'
-
+import { LoaderOneDemo } from './loader'
+import { SkeletonDemo } from './Skeleton'
 const Dashboard: React.FC = () => {
     const [files, setfiles] = React.useState<any[]>([])
     const [folders, setfolders] = React.useState<any[]>([])
     const [path, setpath] = React.useState<String>("Loading...");
     const [prevpath, setprevpath] = React.useState<String>("");
     const [uploading, setUploading] = React.useState<boolean>(false)
+    const [loading, setLoading] = React.useState<boolean>(true);
 
     // It takes the current path as a prop and returns the previous path
     function getPreviousPath(path: String) {
@@ -33,6 +35,7 @@ const Dashboard: React.FC = () => {
             setpath(res.userId)
             setfiles(res.files)
             setfolders(res.folderlist);
+            setLoading(false);
         }
         fetchData();
     }, [])
@@ -44,6 +47,7 @@ const Dashboard: React.FC = () => {
             alert("In the root directory");
             return;
         }
+        setLoading(true);
         const response = await fetch("/api/folderdata", {
             method: 'POST',
             headers: {
@@ -59,6 +63,7 @@ const Dashboard: React.FC = () => {
         setpath(item)
         // console.log(path);
         setfolders(data.folderlist)
+        setLoading(false);
     }
 
     async function callDownloadroute(item: String) {
@@ -147,9 +152,16 @@ const Dashboard: React.FC = () => {
     //     console.log(path);
     // },[path]);
 
-    return <div>
+    return <div className='flex flex-row justify-around gap-0 '>
+
+        {/* left side bar */}
+        {/* <div className='border-r-2 border-slate-400 collapse md:visible md:w-60 md:ml-10]'></div> */}
+        
+
         {/* upload old */}
-        <div className="fixed top-[83%] left-[72%] p-3 border-2 text-black bg-gray-300 border-dashed bg-fixed w-20 flex flex-col rounded-xl justify-center items-center">
+        <div className="h-22 fixed top-[83%] left-[72%] lg:left-[86%] lg:top-[75%] lg:w-40 lg:h-40 p-3 border-3 text-black  border-dashed border-blue-400 bg-fixed w-20 flex flex-col rounded-xl justify-center items-center"></div>
+
+        <div className=" fixed top-[83%] left-[72%] lg:left-[86%] lg:top-[75%] lg:w-40 lg:h-40 p-3 border-2 border-dashed border-gray-300 text-black bg-gray-300/80 bg-fixed w-20 flex flex-col rounded-xl justify-center items-center transition delay-100 duration-300 hover:translate-x-4 hover:-translate-y-4">
             <label htmlFor="fileUpload" className="cursor-pointer">
                 <img
                     className="h-9"
@@ -168,8 +180,9 @@ const Dashboard: React.FC = () => {
         </div>
 
 
+
         {/* top bar */}
-        <div className='w-[92%] mx-[4%] flex flex-col justify-center gap-3'>
+        <div className='w-[92%] mx-[4%] md:mx-[2%] flex flex-col justify-center gap-3'>
 
             <div className='font-bold text-[1.6rem]'>Welcome back</div>
 
@@ -194,9 +207,10 @@ const Dashboard: React.FC = () => {
 
             <div className="border-1 border-slate-400"></div>
 
+            {/* Go back button */}
             <div className="flex flex-row justify-between gap-2 my-1">
                 <div className='flex flex-col  justify-start rounded-lg'>
-                    <button className="h-10 w-10" type="button" onClick={() => fetchOnClick(getPreviousPath(path))}><img src="https://img.icons8.com/?size=100&id=26194&format=png&color=000000" alt="" /></button>
+                    <button className="h-10 w-10 hover:cursor-pointer rounded-full transition delay-50 duration-100 hover:bg-gray-100" type="button" onClick={() => fetchOnClick(getPreviousPath(path))}><img src="https://img.icons8.com/?size=100&id=26194&format=png&color=000000" alt="" /></button>
                 </div>
 
                 {/* <div className="border-2 border-slate-400 rounded-lg px-1 py-2">
@@ -205,15 +219,17 @@ const Dashboard: React.FC = () => {
 
             </div>
 
+            {/* <div className='w-full bg-blue-500 text-white rounded-lg text-xl p-2'>We are soon going to add the Create Folder functionality</div> */}
+
             <div className='text-[1.6rem] font-bold'>All Files and Folders</div>
 
-            <div>
+            {loading ? <div className="flex flex-row justify-center items-center mt-10"><LoaderOneDemo/></div>:<div>
 
                 {/* displaying all the folders */}
-
+                
                 {/* {folders?.length > 0 && <h1 className="font-bold">Folders:</h1>} */}
                 {(folders ?? []).map((item: string, index: number) => (
-                    <div key={index} className='flex flex-row justify-start items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1'>
+                    <div key={index} className='flex flex-row justify-start items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1 hover:bg-gray-200 transition delay-0 duration-200'>
                         <img className="w-10 h-10" src="https://img.icons8.com/?size=100&id=67363&format=png&color=000000" alt="" />
                         <button onClick={() => fetchOnClick(item)} className="hover:cursor-pointer overflow-hidden w[41%]" >{item.substring(33)}</button>
                     </div>
@@ -225,21 +241,27 @@ const Dashboard: React.FC = () => {
                 {/* {files?.length > 0 && <h1 className="font-bold">Files:</h1>} */}
                 {(files ?? []).map((item: string, index: number) => (
                     item.substring(33) && <div className='flex flex-col'>
-                        <div key={index} className='flex flex-row justify-between items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1'>
-                            <img  className="w-10 h-10" src="https://img.icons8.com/?size=100&id=67464&format=png&color=000000" alt="" />
-                            <p className='w-[41%] overflow-hidden'>{item.substring(33)}</p>
-                            {/* Download button */}
-                            <button onClick={() => callDownloadroute(item)} className='p-1 rounded-lg text-white bg-[#1971D6]'>Download</button>
-                            {/* Delete button */}
-                            <button type="button" onClick={() => deleteFile(item)} className="p-1 rounded-lg text-white bg-yellow-500" >Delete</button>
+                        <div key={index} className='flex flex-row justify-between items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1 hover:bg-gray-200 transition delay-0 duration-200'>
+                            <div className='flex flex-row justify-start items-center gap-2 w-[50%]'>
+                                <img className="w-10 h-10" src="https://img.icons8.com/?size=100&id=67464&format=png&color=000000" alt="" />
+                                <p className='max-w-[60%] overflow-hidden'>{item.substring(33)}</p>
+                            </div>
+                            <div className='flex flex-row justify-end items-center gap-2 w-[50%]'>
+                                {/* Download button */}
+                                <button onClick={() => callDownloadroute(item)} className='px-2 py-1 rounded-lg text-white bg-[#1971D6] hover:cursor-pointer'>Download</button>
+                                {/* Delete button */}
+                                <button type="button" onClick={() => deleteFile(item)} className="px-2 py-1 rounded-lg text-white bg-yellow-400 hover:cursor-pointer hover:bg-yellow-500" >Delete</button>
+                            </div>
                         </div>
                     </div>
                 ))}
 
-            </div>
+            </div>}
 
         </div>
 
+        {/* right side bar */}
+        {/* <div className='border-l-2 border-slate-400 collapse md:visible lg:w-80'></div> */}
 
     </div>
 }

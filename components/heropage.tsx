@@ -40,9 +40,9 @@ export function HeroHighlightDemo() {
 shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] rounded-3xl dark:bg-black dark:text-white`}>
           <div className="flex flex-row justify-start gap-4">
             <div className="border-2 rounded-full w-10 h-8">
-              {/* <img src="https://cdn-icons-png.freepik.com/512/3838/3838984.png" alt="" /> */}
+              <img className="w-full h-full object-cover rounded-xl" src="https://walker-web.imgix.net/cms/Gradient_builder_2.jpg?auto=format,compress&w=1920&h=1200&fit=crop&dpr=1.5" alt="" />
             </div>
-            <div>Logo</div>
+            <div>S3UI</div>
           </div>
           <div className="flex flex-row gap-4 justify-between">
             <button className="text-amber-400 hover:cursor-pointer collapse md:visible lg:visible">Premium</button>
@@ -64,21 +64,21 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
           </div>
 
           <div className="text-wrap">
-            <span className="text-[2rem] md:text-5xl">Lorem ipsum dolor sit amet consectetur thats it.</span>
+            <span className="text-[2rem] md:text-5xl">Say goodbye to local storage limitations</span>
             <span>
               <br />
               <Highlight className="text-black dark:text-white w-[80%] text-[2rem]">
-                copy,of a copy,of a copy.
+                with our cloud platform
               </Highlight>
             </span>
           </div>
 
           <div className="text-neutral-700 text-[1.2rem] mt-[3%] dark:text-neutral-200 dark:bg-black">
-            Microlaunch helps you get reviews, exposure and first sales over 30 days. Discover our Premium packs and get long-term Traffic and Sales.
+            Welcome to the future of storage! Say goodbye to the limitations of pysical devices and embrace the freedom of cloud storage.
           </div>
 
           <div className="text-white text-[1.4rem] mt-[2%] font-medium">
-            <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-400 hover:translate-y-[-0.2rem] hover:shadow-xl hover:shadow-purple-200 dark:hover:shadow-xl/20" onClick={()=>{setOpen(!open);}}>Try CloudStorage for free</button>
+            <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-400 hover:translate-y-[-0.2rem] hover:shadow-xl hover:shadow-purple-200 dark:hover:shadow-xl/20" onClick={()=>{setOpen(!open);}}>Explore S3UI for Free</button>
           </div>
 
           <div className="w-[80vw] lg:w-[50vw] md:[50w] mt-[5%]">
