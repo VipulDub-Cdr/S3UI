@@ -1,7 +1,7 @@
 'use client';
 import { Marquee, MarqueeContent, MarqueeItem } from '@/components/ui/shadcn-io/marquee';
 
-let images: string[] = [
+const images: string[] = [
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZ9fiy8VUqQL4Pm6ruBziQz6tRCDXnWR7o1Q&s",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDML5CFq70Y9FJ52YnyCjfdyUA3g9B6is_jA&s",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQAjouFTAB2PcXfnfkjy1SUjkaMeaymXnzoOA&s",

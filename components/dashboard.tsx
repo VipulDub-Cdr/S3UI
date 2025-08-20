@@ -1,21 +1,18 @@
 "use client"
 import * as React from 'react'
-import Buttons from './bttn'
 import { LoaderOneDemo } from './loader'
-import { SkeletonDemo } from './Skeleton'
 const Dashboard: React.FC = () => {
-    const [files, setfiles] = React.useState<any[]>([])
-    const [folders, setfolders] = React.useState<any[]>([])
-    const [path, setpath] = React.useState<String>("Loading...");
-    const [prevpath, setprevpath] = React.useState<String>("");
+    const [files, setfiles] = React.useState<string[]>([])
+    const [folders, setfolders] = React.useState<string[]>([])
+    const [path, setpath] = React.useState<string>("Loading...");
     const [uploading, setUploading] = React.useState<boolean>(false)
     const [loading, setLoading] = React.useState<boolean>(true);
 
     // It takes the current path as a prop and returns the previous path
-    function getPreviousPath(path: String) {
+    function getPreviousPath(path: string) {
         const arr = path.split("/");
         let localprevPath = "";
-        let len = arr.length;
+        const len = arr.length;
         if (len <= 1) {
             return arr[0];
         }
@@ -28,10 +25,9 @@ const Dashboard: React.FC = () => {
 
 
     React.useEffect(() => {
-        let res;
         async function fetchData() {
-            let fetchres = await fetch("/api/objects");
-            res = await fetchres.json();
+            const fetchres = await fetch("/api/objects");
+            const res = await fetchres.json();
             setpath(res.userId)
             setfiles(res.files)
             setfolders(res.folderlist);
@@ -41,7 +37,7 @@ const Dashboard: React.FC = () => {
     }, [])
 
     // It calls the API and API returns the files and folders associted with the item path
-    async function fetchOnClick(item: String) {
+    async function fetchOnClick(item: string) {
         //You need to just remove this logic to give the user Administrative access
         if (item == "") {
             alert("In the root directory");
@@ -66,7 +62,7 @@ const Dashboard: React.FC = () => {
         setLoading(false);
     }
 
-    async function callDownloadroute(item: String) {
+    async function callDownloadroute(item: string) {
         const response = await fetch("/api/download", {
             method: 'POST',
             headers: {
@@ -104,7 +100,7 @@ const Dashboard: React.FC = () => {
 
         const { uploadURl } = await res.json();
         // console.log(typeof uploadURl);
-        const upload = await fetch(uploadURl, {
+        await fetch(uploadURl, {
             method: "PUT",
             headers: { "Content-Type": file.type },
             body: file,
@@ -121,9 +117,9 @@ const Dashboard: React.FC = () => {
         fetchOnClick(path);
     }
 
-    async function deleteFile(item: String) {
+    async function deleteFile(item: string) {
 
-        const response = await fetch("/api/delete", {
+        await fetch("/api/delete", {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -240,8 +236,8 @@ const Dashboard: React.FC = () => {
 
                 {/* {files?.length > 0 && <h1 className="font-bold">Files:</h1>} */}
                 {(files ?? []).map((item: string, index: number) => (
-                    item.substring(33) && <div className='flex flex-col'>
-                        <div key={index} className='flex flex-row justify-between items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1 hover:bg-gray-200 transition delay-0 duration-200'>
+                    item.substring(33) ? <div key={item} className='flex flex-col'>
+                        <div className='flex flex-row justify-between items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1 hover:bg-gray-200 transition delay-0 duration-200'>
                             <div className='flex flex-row justify-start items-center gap-2 w-[50%]'>
                                 <img className="w-10 h-10" src="https://img.icons8.com/?size=100&id=67464&format=png&color=000000" alt="" />
                                 <p className='max-w-[60%] overflow-hidden'>{item.substring(33)}</p>
@@ -253,7 +249,7 @@ const Dashboard: React.FC = () => {
                                 <button type="button" onClick={() => deleteFile(item)} className="px-2 py-1 rounded-lg text-white bg-yellow-400 hover:cursor-pointer hover:bg-yellow-500" >Delete</button>
                             </div>
                         </div>
-                    </div>
+                    </div> : null
                 ))}
 
             </div>}
