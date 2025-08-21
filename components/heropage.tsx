@@ -39,13 +39,16 @@ export function HeroHighlightDemo() {
         <div className={`flex flex-row justify-between bg-white text-black py-2 px-2 text-[1.2rem] lg:text-[1.3rem] font-normal shadow-xl/20 Subscribe
 shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] rounded-3xl dark:bg-black dark:text-white`}>
           <div className="flex flex-row justify-start gap-4">
-            <div className="border-2 rounded-full w-10 h-8">
-              <img className="w-full h-full object-cover rounded-xl" src="https://walker-web.imgix.net/cms/Gradient_builder_2.jpg?auto=format,compress&w=1920&h=1200&fit=crop&dpr=1.5" alt="" />
-            </div>
-            <div>S3UI</div>
+            {/* <div className="border-2 rounded-full w-10 h-8">
+              <img className="w-full h-full object-cover rounded-xl" src="/s3ui.png" alt="" />
+            </div> */}
+            <div className="flex flex-row justify-center items-center px-2 text-slate-600 bg-slate-300 rounded-2xl font-semibold">S3UI</div>
           </div>
           <div className="flex flex-row gap-4 justify-between">
-            <button className="text-amber-400 hover:cursor-pointer collapse md:visible lg:visible">Premium</button>
+            <a href="https://main-wasp-9.accounts.dev/sign-up">
+              {/* <button className="flex flex-row justify-center items-center text-amber-400 hover:cursor-pointer collapse md:visible lg:visible border-2 border-amber-400 rounded-2xl px-2 transition-colors delay-50 duration-200 hover:bg-amber-300 hover:text-white">Register</button> */}
+              <button className="my-1 flex flex-row justify-center items-center text-[1.2rem] font-semibold hover:cursor-pointer transition delay-50">Sign Up</button>
+            </a>
             <button className="hover:cursor-pointer text-white lg:pb-1 bg-[#0077FF] rounded-2xl px-3 transition delay-100 duration-300 hover:bg-[#1971d6]" onClick={() => setOpen(!open)}>Sign in</button>
           </div>
         </div>
@@ -60,7 +63,7 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
             <button className="absolute top-0 right-0 text-black z-2000 font-light text-xl hover:cursor-pointer" onClick={()=>setOpen(!open)}>
               <img src="https://www.svgrepo.com/show/499592/close-x.svg" className={`w-8 h-8 m-2`} alt="" />
             </button>
-            <SignIn routing="hash" />
+            <SignIn routing="hash" signUpUrl="https://main-wasp-9.accounts.dev/sign-up"   />
           </div>
 
           <div className="text-wrap">
@@ -77,9 +80,11 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
             Welcome to the future of storage! Say goodbye to the limitations of pysical devices and embrace the freedom of cloud storage.
           </div>
 
-          <div className="text-white text-[1.4rem] mt-[2%] font-medium">
-            <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-400 hover:translate-y-[-0.2rem] hover:shadow-xl hover:shadow-purple-200 dark:hover:shadow-xl/20" onClick={()=>{setOpen(!open);}}>Explore S3UI for Free</button>
-          </div>
+          <a href="https://main-wasp-9.accounts.dev/sign-up">
+            <div className="text-white text-[1.4rem] mt-[2%] font-medium">
+              <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-400 hover:translate-y-[-0.2rem] hover:shadow-xl hover:shadow-purple-200 dark:hover:shadow-xl/20">Explore S3UI for Free</button>
+            </div>
+          </a>
 
           <div className="w-[80vw] lg:w-[50vw] md:[50w] mt-[5%]">
             <div className="text-neutral-600 text-[1.2rem] mb-[5%] lg:mb-6">Built with</div>

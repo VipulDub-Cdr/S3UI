@@ -22,11 +22,6 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: 'Store your files securely',
-  icons: {
-    icon: '/vercel.png',
-    // shortcut: '/shortcut-icon.png',
-    // apple: '/apple-icon.png',
-  },
 };
 
 

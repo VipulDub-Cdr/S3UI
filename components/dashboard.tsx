@@ -94,7 +94,7 @@ const Dashboard: React.FC = () => {
         const data = await response.json();
         const url = data.url;
         if (url) {
-            window.open(url, '_blank')
+            window.open(url)
         }
     }
 
@@ -193,7 +193,7 @@ const Dashboard: React.FC = () => {
                                             onClick={() => fetchOnClick(item)} 
                                             className="text-left hover:cursor-pointer text-gray-900 font-md"
                                         >
-                                            {item.substring(33)==""? "Click here" : item.substring(33)}
+                                            {item.substring(33)==""? "Click here to continue" : item.substring(33)}
                                         </button>
                                     </div>
                                 </div>
@@ -303,19 +303,19 @@ const Dashboard: React.FC = () => {
                             disabled={uploading}
                             className="hidden"
                         />
-                        <p className="text-md mt-1">Upload</p>
+                        <p className="text-md mt-1">Upload File</p>
                     </div>
                         <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
                             <FileText className="w-8 h-8 text-gray-600 mb-2" />
-                            <span className="text-sm font-medium text-gray-900">New project</span>
+                            <span className="text-sm font-medium text-gray-900">Coming Soon..</span>
                         </button>
                         <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
                             <Users className="w-8 h-8 text-gray-600 mb-2" />
-                            <span className="text-sm font-medium text-gray-900">New team</span>
+                            <span className="text-sm font-medium text-gray-900">Coming Soon..</span>
                         </button>
                         <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
                             <Building2 className="w-8 h-8 text-gray-600 mb-2" />
-                            <span className="text-sm font-medium text-gray-900">New organization</span>
+                            <span className="text-sm font-medium text-gray-900">Coming Soon..</span>
                         </button>
                     </div>
                 </div>
@@ -356,9 +356,9 @@ const Dashboard: React.FC = () => {
                                 </div>
                             ))}
 
-                            {/*Displaying all the files Files */}
+                            {/*Displaying all the files*/}
                             {(files ?? []).map((item: string, index: number) => (
-                                item.substring(33) ? (
+                                item.substring(33) && item!=path ? (
                                     <div key={item} className='flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'>
                                         <div className='flex items-center space-x-3'>
                                             <img className="w-8 h-8" src="https://img.icons8.com/?size=100&id=67464&format=png&color=000000" alt="File" />
@@ -367,14 +367,14 @@ const Dashboard: React.FC = () => {
                                         <div className='flex items-center space-x-2'>
                                             <button 
                                                 onClick={() => callDownloadroute(item)} 
-                                                className='px-3 py-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium hover:cursor-pointer'
+                                                className='px-3 py-2 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium hover:cursor-pointer'
                                             >
                                                 Download
                                             </button>
                                             <button 
                                                 type="button" 
                                                 onClick={() => deleteFile(item)} 
-                                                className="px-3 py-1.5 rounded-lg text-white bg-yellow-500 hover:bg-yellow-600 transition-colors text-sm font-medium hover:cursor-pointer"
+                                                className="px-3 py-2 rounded-lg text-white bg-yellow-500 hover:bg-yellow-600 transition-colors text-sm font-medium hover:cursor-pointer"
                                             >
                                                 Delete
                                             </button>
