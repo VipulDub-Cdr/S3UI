@@ -64,11 +64,11 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
           </div>
 
           <div className="text-wrap">
-            <span className="text-[2rem] md:text-5xl">Say goodbye to local storage limitations</span>
+            <span className="text-[2rem] md:text-5xl">Say Goodbye To Local Storage Limitations</span>
             <span>
               <br />
               <Highlight className="text-black dark:text-white w-[80%] text-[2rem]">
-                with our cloud platform
+                With Our Cloud Platform
               </Highlight>
             </span>
           </div>

@@ -1,12 +1,35 @@
 "use client"
 import * as React from 'react'
 import { LoaderOneDemo } from './loader'
+import { UserButton, useUser } from "@clerk/nextjs";
+
+import { 
+    Home, 
+    FolderOpen, 
+    Users, 
+    Palette, 
+    ExternalLink, 
+    HelpCircle, 
+    Settings,
+    Search,
+    ChevronDown,
+    FileText,
+    FolderPlus,
+    Building2,
+    Plus,
+    Menu,
+    X
+} from 'lucide-react'
+
 const Dashboard: React.FC = () => {
+    const { isLoaded, user } = useUser();
     const [files, setfiles] = React.useState<string[]>([])
     const [folders, setfolders] = React.useState<string[]>([])
     const [path, setpath] = React.useState<string>("Loading...");
     const [uploading, setUploading] = React.useState<boolean>(false)
     const [loading, setLoading] = React.useState<boolean>(true);
+    const [foldersExpanded, setFoldersExpanded] = React.useState<boolean>(false);
+    const [isSidebarOpen, setIsSidebarOpen] = React.useState<boolean>(false);
 
     // It takes the current path as a prop and returns the previous path
     function getPreviousPath(path: string) {
@@ -19,10 +42,8 @@ const Dashboard: React.FC = () => {
         for (let i = 0; i < len - 2; i++) {
             localprevPath += arr[i] + "/";
         }
-        // console.log(localprevPath)
         return localprevPath;
     }
-
 
     React.useEffect(() => {
         async function fetchData() {
@@ -38,7 +59,6 @@ const Dashboard: React.FC = () => {
 
     // It calls the API and API returns the files and folders associted with the item path
     async function fetchOnClick(item: string) {
-        //You need to just remove this logic to give the user Administrative access
         if (item == "") {
             alert("In the root directory");
             return;
@@ -57,7 +77,6 @@ const Dashboard: React.FC = () => {
         const data = await response.json();
         setfiles(data.files)
         setpath(item)
-        // console.log(path);
         setfolders(data.folderlist)
         setLoading(false);
     }
@@ -74,17 +93,13 @@ const Dashboard: React.FC = () => {
         })
         const data = await response.json();
         const url = data.url;
-        // console.log(data);
         if (url) {
             window.open(url, '_blank')
         }
     }
 
     async function uploadFile(e: React.ChangeEvent<HTMLInputElement>) {
-        // console.log(e.target.files?.[0]);
         const file = e.target.files?.[0];
-        // console.log(file.name);
-        // console.log(file.type);
         if (!file) return;
         setUploading(true);
 
@@ -99,26 +114,18 @@ const Dashboard: React.FC = () => {
         })
 
         const { uploadURl } = await res.json();
-        // console.log(typeof uploadURl);
         await fetch(uploadURl, {
             method: "PUT",
             headers: { "Content-Type": file.type },
             body: file,
         })
-        // console.log(upload);
 
         setUploading(false);
-
-        // if(upload.ok) alert("Upload successfull")
-        // else alert("upload failed")
-
         e.target.value = "";
-
         fetchOnClick(path);
     }
 
     async function deleteFile(item: string) {
-
         await fetch("/api/delete", {
             method: "DELETE",
             headers: { "Content-Type": "application/json" },
@@ -126,140 +133,268 @@ const Dashboard: React.FC = () => {
                 "path": item,
             })
         })
-
-        // if(response) alert("Object deleted successfully")
-        // else alert("Can't delete object")
-        // console.log(path);
         fetchOnClick(path);
     }
 
-    // Testing part
-    // React.useEffect(() => {
-    //     if (files && folders) {
-    //         console.log(files);
-    //         console.log(folders);
-    //     } else {
-    //         console.log("either files or folders is empty")
-    //     }
-    // }, [files, folders])
-
-
-    // React.useEffect(()=>{
-    //     console.log(path);
-    // },[path]);
-
-    return <div className='flex flex-row justify-around gap-0 '>
-
-        {/* left side bar */}
-        {/* <div className='border-r-2 border-slate-400 collapse md:visible md:w-60 md:ml-10]'></div> */}
-        
-
-        {/* upload old */}
-        <div className="h-22 fixed top-[83%] left-[72%] lg:left-[86%] lg:top-[75%] lg:w-40 lg:h-40 p-3 border-3 text-black  border-dashed border-blue-400 bg-fixed w-20 flex flex-col rounded-xl justify-center items-center"></div>
-
-        <div className=" fixed top-[83%] left-[72%] lg:left-[86%] lg:top-[75%] lg:w-40 lg:h-40 p-3 border-2 border-dashed border-gray-300 text-black bg-gray-300/80 bg-fixed w-20 flex flex-col rounded-xl justify-center items-center transition delay-100 duration-300 hover:translate-x-4 hover:-translate-y-4">
-            <label htmlFor="fileUpload" className="cursor-pointer">
-                <img
-                    className="h-9"
-                    src="https://img.icons8.com/?size=100&id=4716&format=png&color=000000"
-                    alt="Upload"
-                />
-            </label>
-            <input
-                id="fileUpload"
-                type="file"
-                onChange={uploadFile}
-                disabled={uploading}
-                className="hidden"
-            />
-            <p>Upload</p>
-        </div>
-
-
-
-        {/* top bar */}
-        <div className='w-[92%] mx-[4%] md:mx-[2%] flex flex-col justify-center gap-3'>
-
-            <div className='font-bold text-[1.6rem]'>Welcome back</div>
-
-            {/* <div className="w-full max-w-sm min-w-[200px]">
-                <div className="relative">
-                    <input
-                        className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-3 pr-28 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
-                        placeholder=""
-                    />
+    return (
+        <div className="flex min-h-screen bg-gray-50">
+            <aside className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+                <div className="relative p-6 border-b border-gray-200">
                     <button
-                        className="absolute top-1 right-1 flex items-center rounded bg-slate-800 py-1 px-2.5 border border-transparent text-center text-sm text-white transition-all shadow-sm hover:shadow focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
                         type="button"
+                        className="md:hidden absolute right-4 top-4 p-2 rounded-md hover:bg-gray-100"
+                        onClick={() => setIsSidebarOpen(false)}
+                        aria-label="Close sidebar"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 mr-2">
-                            <path fill-rule="evenodd" d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Z" clip-rule="evenodd" />
-                        </svg>
-
-                        Search
+                        <X className="w-5 h-5 text-gray-500" />
                     </button>
-                </div>
-            </div> */}
-
-            <div className="border-1 border-slate-400"></div>
-
-            {/* Go back button */}
-            <div className="flex flex-row justify-between gap-2 my-1">
-                <div className='flex flex-col  justify-start rounded-lg'>
-                    <button className="h-10 w-10 hover:cursor-pointer rounded-full transition delay-50 duration-100 hover:bg-gray-100" type="button" onClick={() => fetchOnClick(getPreviousPath(path))}><img src="https://img.icons8.com/?size=100&id=26194&format=png&color=000000" alt="" /></button>
-                </div>
-
-                {/* <div className="border-2 border-slate-400 rounded-lg px-1 py-2">
-                    {path}
-                </div> */}
-
-            </div>
-
-            {/* <div className='w-full bg-blue-500 text-white rounded-lg text-xl p-2'>We are soon going to add the Create Folder functionality</div> */}
-
-            <div className='text-[1.6rem] font-bold'>All Files and Folders</div>
-
-            {loading ? <div className="flex flex-row justify-center items-center mt-10"><LoaderOneDemo/></div>:<div>
-
-                {/* displaying all the folders */}
-                
-                {/* {folders?.length > 0 && <h1 className="font-bold">Folders:</h1>} */}
-                {(folders ?? []).map((item: string, index: number) => (
-                    <div key={index} className='flex flex-row justify-start items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1 hover:bg-gray-200 transition delay-0 duration-200'>
-                        <img className="w-10 h-10" src="https://img.icons8.com/?size=100&id=67363&format=png&color=000000" alt="" />
-                        <button onClick={() => fetchOnClick(item)} className="hover:cursor-pointer overflow-hidden w[41%]" >{item.substring(33)}</button>
+                    <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <span className="text-white font-bold text-sm">UI</span>
+                        </div>
+                        <div className='w-[70%]'>
+                            <h2 className="font-semibold text-gray-900">Dashboard</h2>
+                            <p className="text-sm text-gray-500 overflow-hidden">{user?.emailAddresses[0].emailAddress}</p>
+                        </div>
                     </div>
-                ))}
+                </div>
 
+                <nav className="flex-1 p-4 space-y-2">
+                    <div className="flex items-center space-x-3 px-3 py-2 bg-gray-100 rounded-lg">
+                        <Home className="w-5 h-5 text-gray-700" />
+                        <span className="text-gray-900 font-medium">Home</span>
+                    </div>
 
-                {/* displaying all the files */}
+                    <div className="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                        <FileText className="w-5 h-5" />
+                        <span>My projects</span>
+                    </div>
 
-                {/* {files?.length > 0 && <h1 className="font-bold">Files:</h1>} */}
-                {(files ?? []).map((item: string, index: number) => (
-                    item.substring(33) ? <div key={item} className='flex flex-col'>
-                        <div className='flex flex-row justify-between items-center gap-2 border-2 border-slate-400 mb-2 pr-1 rounded-lg py-1 hover:bg-gray-200 transition delay-0 duration-200'>
-                            <div className='flex flex-row justify-start items-center gap-2 w-[50%]'>
-                                <img className="w-10 h-10" src="https://img.icons8.com/?size=100&id=67464&format=png&color=000000" alt="" />
-                                <p className='max-w-[60%] overflow-hidden'>{item.substring(33)}</p>
+                    <div>
+                        <div 
+                            className="flex items-center justify-between px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer"
+                            onClick={() => setFoldersExpanded(!foldersExpanded)}
+                        >
+                            <div className="flex items-center space-x-3">
+                                <FolderOpen className="w-5 h-5" />
+                                <span>Folders</span>
                             </div>
-                            <div className='flex flex-row justify-end items-center gap-2 w-[50%]'>
-                                {/* Download button */}
-                                <button onClick={() => callDownloadroute(item)} className='px-2 py-1 rounded-lg text-white bg-[#1971D6] hover:cursor-pointer'>Download</button>
-                                {/* Delete button */}
-                                <button type="button" onClick={() => deleteFile(item)} className="px-2 py-1 rounded-lg text-white bg-yellow-400 hover:cursor-pointer hover:bg-yellow-500" >Delete</button>
+                            <ChevronDown className={`w-4 h-4 transition-transform ${foldersExpanded ? 'rotate-180' : ''}`} />
+                        </div>
+                        
+                        {foldersExpanded && (
+                            <div className="ml-8 mt-2 space-y-1">
+                                {(folders ?? []).map((item: string, index: number) => (
+                                <div key={index} className='flex items-center justify-between px-4 py-1 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'>
+                                    <div className="flex items-center space-x-3">
+                                        <button 
+                                            onClick={() => fetchOnClick(item)} 
+                                            className="text-left hover:cursor-pointer text-gray-900 font-md"
+                                        >
+                                            {item.substring(33)==""? "Click here" : item.substring(33)}
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                        <FolderPlus className="w-5 h-5" />
+                        <span>All files</span>
+                    </div>
+
+                    <div className="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                        <Users className="w-5 h-5" />
+                        <span>Team members</span>
+                    </div>
+
+                    <div className="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                        <Palette className="w-5 h-5" />
+                        <span>Appearance</span>
+                    </div>
+
+                    {/* Open in browser */}
+                    <div className="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                        <ExternalLink className="w-5 h-5" />
+                        <span>Open in browser</span>
+                    </div>
+                </nav>
+
+                <div className="p-4 border-t border-gray-200 space-y-2">
+                    <div className="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                        <HelpCircle className="w-5 h-5" />
+                        <span>Support</span>
+                    </div>
+                    <div className="flex items-center space-x-3 px-3 py-2 text-gray-600 hover:bg-gray-50 rounded-lg cursor-pointer">
+                        <Settings className="w-5 h-5" />
+                        <span>Settings</span>
+                    </div>
+                </div>
+            </aside>
+
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-black/30 z-30 md:hidden"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
+
+            <div className="flex-1 flex flex-col">
+                {/* Top Navigation Bar */}
+                <div className="bg-white border-b border-gray-200 px-6 py-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <button
+                                type="button"
+                                className="md:hidden p-2 rounded-md hover:bg-gray-100"
+                                onClick={() => setIsSidebarOpen(true)}
+                                aria-label="Open sidebar"
+                            >
+                                <Menu className="w-5 h-5 text-gray-700" />
+                            </button>
+                            <h1 className="text-xl font-semibold text-gray-900">Welcome back</h1>
+                        </div>
+                        
+                        {/*saerch bar*/}
+                        <div className="hidden md:block flex-1 max-w-md mx-8">
+                            <div className="relative">
+                                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                <input
+                                    type="text"
+                                    placeholder="Search"
+                                    className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
                             </div>
                         </div>
-                    </div> : null
-                ))}
 
-            </div>}
+                        {/* userButton and Name*/}
+                        <div className="flex items-center space-x-3">
+                            <div className="flex items-center space-x-1">
+                                <span className="hidden sm:inline text-lg font-semibold text-gray-900">{user?.fullName}</span>
+                            </div>
 
+                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                <span className="text-white text-sm font-medium"><UserButton/></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Nvbar ke neeche*/}
+                <div className="bg-white px-6 py-6 border-b border-gray-200">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                            <Plus className="w-8 h-8 text-gray-600 mb-2" />
+                            <span className="text-sm font-medium text-gray-900">New document</span>
+                        </button>
+                        <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                            <FileText className="w-8 h-8 text-gray-600 mb-2" />
+                            <span className="text-sm font-medium text-gray-900">New project</span>
+                        </button>
+                        <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                            <Users className="w-8 h-8 text-gray-600 mb-2" />
+                            <span className="text-sm font-medium text-gray-900">New team</span>
+                        </button>
+                        <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
+                            <Building2 className="w-8 h-8 text-gray-600 mb-2" />
+                            <span className="text-sm font-medium text-gray-900">New organization</span>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Main Content Area */}
+                <div className="flex-1 p-6 overflow-auto">
+                    {/* Go back button */}
+                    <div className="flex items-center justify-between mb-6">
+                        <button 
+                            className="h-10 w-10 hover:cursor-pointer rounded-full transition delay-50 duration-100 hover:bg-gray-100 flex items-center justify-center" 
+                            type="button" 
+                            onClick={() => fetchOnClick(getPreviousPath(path))}
+                        >
+                            <img src="https://img.icons8.com/?size=100&id=26194&format=png&color=000000" alt="Go back" />
+                        </button>
+                    </div>
+
+                    <h2 className="text-2xl font-bold text-gray-900 mb-6">All Files and Folders</h2>
+
+                    {loading ? (
+                        <div className="flex justify-center items-center mt-10">
+                            <LoaderOneDemo/>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            {/* Displaying all the Folders */}
+                            {(folders ?? []).map((item: string, index: number) => (
+                                <div key={index} className='flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'>
+                                    <div className="flex items-center space-x-3">
+                                        <img className={`${item.substring(33)==""? "collapse" : "visible"} w-8 h-8`} src="https://img.icons8.com/?size=100&id=67363&format=png&color=000000"/>
+                                        <button 
+                                            onClick={() => fetchOnClick(item)} 
+                                            className="text-left hover:cursor-pointer text-gray-900 font-medium"
+                                        >
+                                            {item.substring(33)==""? "Click here" : item.substring(33)}
+                                        </button>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {/*Displaying all the files Files */}
+                            {(files ?? []).map((item: string, index: number) => (
+                                item.substring(33) ? (
+                                    <div key={item} className='flex items-center justify-between p-4 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors'>
+                                        <div className='flex items-center space-x-3'>
+                                            <img className="w-8 h-8" src="https://img.icons8.com/?size=100&id=67464&format=png&color=000000" alt="File" />
+                                            <span className='text-gray-900 font-medium max-w-xs truncate'>{item.substring(33)}</span>
+                                        </div>
+                                        <div className='flex items-center space-x-2'>
+                                            <button 
+                                                onClick={() => callDownloadroute(item)} 
+                                                className='px-3 py-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium'
+                                            >
+                                                Download
+                                            </button>
+                                            <button 
+                                                type="button" 
+                                                onClick={() => deleteFile(item)} 
+                                                className="px-3 py-1.5 rounded-lg text-white bg-yellow-500 hover:bg-yellow-600 transition-colors text-sm font-medium"
+                                            >
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : null
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            {/* Upload Button - Fixed Position */}
+            <div className="fixed bottom-6 right-6">
+                <div className="relative">
+                    <div className="lg:w-32 lg:h-32 w-25 h-25 p-3 border-2 border-dashed border-gray-300 bg-gray-300/80 rounded-xl flex flex-col justify-center items-center transition-all duration-300 hover:scale-x-110 hover:scale-y-110 hover:-translate-y-1">
+                        <label htmlFor="fileUpload" className="cursor-pointer">
+                            <img
+                                className="h-8"
+                                src="https://img.icons8.com/?size=100&id=TDaRPAsMt1Bs&format=png&color=000000"
+                                alt="Upload"
+                            />
+                        </label>
+                        <input
+                            id="fileUpload"
+                            type="file"
+                            onChange={uploadFile}
+                            disabled={uploading}
+                            className="hidden"
+                        />
+                        <p className="text-md mt-1">Upload</p>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        {/* right side bar */}
-        {/* <div className='border-l-2 border-slate-400 collapse md:visible lg:w-80'></div> */}
-
-    </div>
+    )
 }
 
 export default Dashboard
