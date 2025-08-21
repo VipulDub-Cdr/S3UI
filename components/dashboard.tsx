@@ -94,7 +94,7 @@ const Dashboard: React.FC = () => {
         const data = await response.json();
         const url = data.url;
         if (url) {
-            window.open(url)
+            window.open(url, '_blank')
         }
     }
 
