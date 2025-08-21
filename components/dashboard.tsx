@@ -138,7 +138,8 @@ const Dashboard: React.FC = () => {
 
     return (
         <div className="flex min-h-screen bg-gray-50">
-            <aside className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>
+            
+            <aside className={`fixed md:static inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}`}>                
                 <div className="relative p-6 border-b border-gray-200">
                     <button
                         type="button"
@@ -160,6 +161,7 @@ const Dashboard: React.FC = () => {
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">
+                    
                     <div className="flex items-center space-x-3 px-3 py-2 bg-gray-100 rounded-lg">
                         <Home className="w-5 h-5 text-gray-700" />
                         <span className="text-gray-900 font-medium">Home</span>
@@ -242,6 +244,7 @@ const Dashboard: React.FC = () => {
             )}
 
             <div className="flex-1 flex flex-col">
+
                 {/* Top Navigation Bar */}
                 <div className="bg-white border-b border-gray-200 px-6 py-4">
                     <div className="flex items-center justify-between">
@@ -285,10 +288,23 @@ const Dashboard: React.FC = () => {
                 {/* Nvbar ke neeche*/}
                 <div className="bg-white px-6 py-6 border-b border-gray-200">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
-                            <Plus className="w-8 h-8 text-gray-600 mb-2" />
-                            <span className="text-sm font-medium text-gray-900">New document</span>
-                        </button>
+                    <div className="lg:w-full lg:h-full p-3 border-2 border-dashed border-gray-300 bg-gray-300/80 rounded-xl flex flex-col justify-center items-center">
+                        <label htmlFor="fileUpload" className="cursor-pointer">
+                            <img
+                                className="h-8"
+                                src="https://img.icons8.com/?size=100&id=TDaRPAsMt1Bs&format=png&color=000000"
+                                alt="Upload"
+                            />
+                        </label>
+                        <input
+                            id="fileUpload"
+                            type="file"
+                            onChange={uploadFile}
+                            disabled={uploading}
+                            className="hidden"
+                        />
+                        <p className="text-md mt-1">Upload</p>
+                    </div>
                         <button className="hover:cursor-pointer flex flex-col items-center justify-center p-6 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">
                             <FileText className="w-8 h-8 text-gray-600 mb-2" />
                             <span className="text-sm font-medium text-gray-900">New project</span>
@@ -351,14 +367,14 @@ const Dashboard: React.FC = () => {
                                         <div className='flex items-center space-x-2'>
                                             <button 
                                                 onClick={() => callDownloadroute(item)} 
-                                                className='px-3 py-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium'
+                                                className='px-3 py-1.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors text-sm font-medium hover:cursor-pointer'
                                             >
                                                 Download
                                             </button>
                                             <button 
                                                 type="button" 
                                                 onClick={() => deleteFile(item)} 
-                                                className="px-3 py-1.5 rounded-lg text-white bg-yellow-500 hover:bg-yellow-600 transition-colors text-sm font-medium"
+                                                className="px-3 py-1.5 rounded-lg text-white bg-yellow-500 hover:bg-yellow-600 transition-colors text-sm font-medium hover:cursor-pointer"
                                             >
                                                 Delete
                                             </button>
@@ -371,26 +387,9 @@ const Dashboard: React.FC = () => {
                 </div>
             </div>
 
-            {/* Upload Button - Fixed Position */}
             <div className="fixed bottom-6 right-6">
                 <div className="relative">
-                    <div className="lg:w-32 lg:h-32 w-25 h-25 p-3 border-2 border-dashed border-gray-300 bg-gray-300/80 rounded-xl flex flex-col justify-center items-center transition-all duration-300 hover:scale-x-110 hover:scale-y-110 hover:-translate-y-1">
-                        <label htmlFor="fileUpload" className="cursor-pointer">
-                            <img
-                                className="h-8"
-                                src="https://img.icons8.com/?size=100&id=TDaRPAsMt1Bs&format=png&color=000000"
-                                alt="Upload"
-                            />
-                        </label>
-                        <input
-                            id="fileUpload"
-                            type="file"
-                            onChange={uploadFile}
-                            disabled={uploading}
-                            className="hidden"
-                        />
-                        <p className="text-md mt-1">Upload</p>
-                    </div>
+                    
                 </div>
             </div>
         </div>
