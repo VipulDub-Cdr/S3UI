@@ -2,9 +2,7 @@
 
 import { SignedOut } from "@clerk/nextjs";
 import { HeroHighlightDemo } from "./heropage";
-// import { SecondPage } from "./secondPage";
-// import { StickyScrollRevealDemo } from "@/components/stickyScroll"
-
+import Secondpage from "./secpage";
 export default function LandingPage() {
   return (
     <SignedOut>
@@ -12,8 +10,10 @@ export default function LandingPage() {
       <div className=" w-[100vw] h-[100vh] bg-[url('/image.png')]  bg-cover bg-center bg-no-repeat">
         <HeroHighlightDemo />
       </div>
-      {/* <StickyScrollRevealDemo/> */}
-      {/* <SecondPage/> */}
+      <div className="w-[100vw] h-[100%] relative">
+        {/* Second page goes here */}
+        <Secondpage/>
+      </div>
     </SignedOut>
   );
 }
