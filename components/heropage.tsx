@@ -26,7 +26,7 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
             <div className="flex flex-row justify-center items-center px-2 text-slate-600 bg-slate-300 rounded-2xl font-semibold">S3UI</div>
           </div>
           <div className="flex flex-row gap-4 justify-between">
-            <a href="https://main-wasp-9.accounts.dev/sign-up">
+            <a href="">
               {/* <button className="flex flex-row justify-center items-center text-amber-400 hover:cursor-pointer collapse md:visible lg:visible border-2 border-amber-400 rounded-2xl px-2 transition-colors delay-50 duration-200 hover:bg-amber-300 hover:text-white">Register</button> */}
               <button className="my-1 flex flex-row justify-center items-center text-[1.2rem] font-semibold hover:cursor-pointer transition delay-50">Sign Up</button>
             </a>
