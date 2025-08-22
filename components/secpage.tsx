@@ -45,7 +45,7 @@ const BigCardImageRight: React.FC<MyComponentProps> = ({ url, heading, descripti
 
                 <div className="text-gray-800 md:w-[60%]">{description}</div>
 
-                <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black my-1 hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black" onClick={() => { window.open("https://main-wasp-9.accounts.dev/sign-up") }}>
+                <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black my-1 hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black" onClick={() => { window.open("") }}>
                     Try for free
                 </button>
             </div>
@@ -66,7 +66,7 @@ const BigCardImageLeft: React.FC<MyComponentProps> = ({ url, heading, descriptio
 
                 <div className="text-gray-800 md:w-[60%]">{description}</div>
 
-                <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black my-1" onClick={() => { window.open("https://main-wasp-9.accounts.dev/sign-up") }}>
+                <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black my-1" onClick={() => { window.open("") }}>
                     Try for free
                 </button>
             </div>
