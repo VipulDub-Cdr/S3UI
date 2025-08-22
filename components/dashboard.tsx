@@ -320,7 +320,6 @@ const Dashboard: React.FC = () => {
                     </div>
                 </div>
 
-                {/* Main Content Area */}
                 <div className="flex-1 p-6 overflow-auto">
                     {/* Go back button */}
                     <div className="flex items-center justify-between mb-6">

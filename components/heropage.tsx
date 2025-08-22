@@ -13,26 +13,7 @@ export function HeroHighlightDemo() {
   const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <div>
-
-      <HeroHighlight>
-      <motion.h1
-        initial={{
-          opacity: 0,
-          y: 20,
-        }}
-        animate={{
-          opacity: 1,
-          y: [20, -5, 0],
-        }}
-        transition={{
-          duration: 0.6,
-          ease: [0.4, 0.0, 0.2, 1],
-        }}
-        className="text-2xl px-4 md:text-4xl lg:text-5xl font-bold text-black dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto"
-      >
-
-        
+    <div className="text-2xl px-4 md:text-4xl lg:text-5xl font-bold text-black dark:text-white max-w-4xl leading-relaxed lg:leading-snug text-center mx-auto">
 
         {/* Navbar */}
 
@@ -55,7 +36,7 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
 
         {/* Hero content */}
 
-        <div className="flex flex-col gap-2 lg:gap-1 justify-center items-center pt-[10%] md:pt-0 lg:pt-0">
+        <div className="mt-[10%] lg:mt-0 flex flex-col gap-2 lg:gap-1 justify-center items-center pt-[10%] md:pt-0 lg:pt-0">
 
           {/* SignIn page */}
 
@@ -67,33 +48,29 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
           </div>
 
           <div className="text-wrap">
-            <span className="text-[2rem] md:text-5xl">Say Goodbye To Local Storage Limitations</span>
-            <span>
-              <br />
-              <Highlight className="text-black dark:text-white w-[80%] text-[2rem]">
+            <span className="text-[2rem] md:text-5xl font-medium text-tight">Say Goodbye To <span className="text-white">Local Storage</span> Limitations </span>
+            {/* <div className="lg:h-0 lg:collapse "><br /></div> */}
+            <span className="text-[1.9rem] md:text-5xl font-medium text-black">
                 With Our Cloud Platform
-              </Highlight>
             </span>
           </div>
 
-          <div className="text-neutral-700 text-[1.2rem] mt-[3%] dark:text-neutral-200 dark:bg-black">
-            Welcome to the future of storage! Say goodbye to the limitations of pysical devices and embrace the freedom of cloud storage.
+          <div className="text-neutral-600 font-medium px-2 text-[1.2rem] mt-[3%] dark:text-neutral-200 dark:bg-black text-wrap">
+            Welcome to the future of storage! Say goodbye to the limitations of physical devices and embrace the freedom of cloud storage.
           </div>
 
           <a href="https://main-wasp-9.accounts.dev/sign-up">
-            <div className="text-white text-[1.4rem] mt-[2%] font-medium">
-              <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-400 hover:translate-y-[-0.2rem] hover:shadow-xl hover:shadow-purple-200 dark:hover:shadow-xl/20">Explore S3UI for Free</button>
+            <div className="text-white text-[1.4rem] mt-[10%] font-medium">
+              <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-400 hover:translate-y-[-0.2rem] l">Explore S3UI for Free</button>
             </div>
           </a>
 
-          <div className="w-[80vw] lg:w-[50vw] md:[50w] mt-[5%]">
+          <div className="w-[80vw] lg:w-[50vw] md:[50w] mt-[6%]">
             <div className="text-neutral-600 text-[1.2rem] mb-[5%] lg:mb-6">Built with</div>
             <MarqueeExample />
           </div>
 
         </div>
-      </motion.h1>
-    </HeroHighlight>
 
     </div>
     

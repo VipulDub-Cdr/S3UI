@@ -8,7 +8,10 @@ import { HeroHighlightDemo } from "./heropage";
 export default function LandingPage() {
   return (
     <SignedOut>
-      <HeroHighlightDemo />
+      {/* lg:bg-[url('/largeimage.png')]  */}
+      <div className=" w-[100vw] h-[100vh] bg-[url('/image.png')]  bg-cover bg-center bg-no-repeat">
+        <HeroHighlightDemo />
+      </div>
       {/* <StickyScrollRevealDemo/> */}
       {/* <SecondPage/> */}
     </SignedOut>

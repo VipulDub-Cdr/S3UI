@@ -24,7 +24,7 @@ const MarqueeExample = () => (
       ))} */}
         {
           images.map((val:string,index:number)=>(
-            <MarqueeItem className="h-16 w-16 mx-3 lg:mx-6 md:mx-6" key={index}>
+            <MarqueeItem className="h-16 w-16 mx-3  md:mx-6" key={index}>
                 <img
                   alt={`Placeholder ${index}`}
                   className="overflow-hidden rounded-full"
