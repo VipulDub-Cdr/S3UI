@@ -61,7 +61,7 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
 
           <a href="https://main-wasp-9.accounts.dev/sign-up">
             <div className="text-white text-[1.4rem] mt-[10%] font-medium">
-              <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-indigo-500 to-purple-400 hover:translate-y-[-0.2rem] l">Explore S3UI for Free</button>
+              <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-slate-400 to-slate-500 hover:translate-y-[-0.2rem] l">Explore S3UI for Free</button>
             </div>
           </a>
 
