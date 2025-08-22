@@ -1,6 +1,8 @@
 "use client"
 import React from 'react';
 import { TypingAnimation } from "@/components/magicui/typing-animation";
+import Link from "next/link";
+
 
 interface MyComponentProps {
     url: string;
@@ -46,9 +48,11 @@ const BigCardImageRight: React.FC<MyComponentProps> = ({ url, heading, descripti
 
                 <div className="text-gray-800 md:w-[60%]">{description}</div>
 
-                <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black my-1 hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black" onClick={() => { window.open("") }}>
-                    Try for free
-                </button>
+                <Link href="/register">
+                    <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black my-1 hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black" onClick={() => { window.open("") }}>
+                        Try for free
+                    </button>
+                </Link>
             </div>
         </div>
 
@@ -67,9 +71,11 @@ const BigCardImageLeft: React.FC<MyComponentProps> = ({ url, heading, descriptio
 
                 <div className="text-gray-800 md:w-[60%]">{description}</div>
 
-                <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black my-1" onClick={() => { window.open("") }}>
-                    Try for free
-                </button>
+                <Link href="/register">
+                    <button className="rounded-2xl lg:rounded-lg px-4 py-1 text-white font-medium bg-black my-1 hover:cursor-pointer hover:bg-white hover:text-black hover:border-1 hover:border-black" onClick={() => { window.open("") }}>
+                        Try for free
+                    </button>
+                </Link>
             </div>
         </div>
 

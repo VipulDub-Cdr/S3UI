@@ -51,11 +51,9 @@ shadow-blue-500/50 sticky top-[5%] lg:top-[6%] z-1000 md:mb-[10%] lg:mb-[10%] ro
             Welcome to the future of storage! Say goodbye to the limitations of physical devices and embrace the freedom of cloud storage.
           </div>
 
-          <a href="">
-            <div className="text-white text-[1.4rem] mt-[10%] font-medium">
-              <button className="p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-slate-400 to-slate-500 hover:translate-y-[-0.2rem]">Explore S3UI for Free</button>
-            </div>
-          </a>
+          <Link href="/register">
+              <button className="text-white text-[1.4rem] mt-[10%] font-medium p-3 rounded-2xl transition delay-100 duration-300 ease-in-out hover:cursor-pointer bg-gradient-to-r from-slate-400 to-slate-500 hover:translate-y-[-0.2rem]">Explore S3UI for Free</button>
+          </Link>
 
           <div className="w-[80vw] lg:w-[50vw] md:[50w] mt-[6%]">
             <div className="text-neutral-600 text-[1.2rem] mb-[5%] lg:mb-6">Built with</div>

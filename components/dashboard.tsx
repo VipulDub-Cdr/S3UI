@@ -295,15 +295,11 @@ const Dashboard: React.FC = () => {
                             <div className="flex items-center space-x-2">
                                 <button
                                     onClick={logout}
-                                    className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                                    className="px-3 py-2 rounded-xl hover:cursor-pointer font-semibold bg-blue-400 text-white rounded hover:bg-blue-500 transition-colors"
                                 >
                                     Logout
                                 </button>
-                                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                    <span className="text-white text-sm font-medium">
-                                        {user?.name?.charAt(0).toUpperCase()}
-                                    </span>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
