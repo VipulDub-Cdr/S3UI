@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import {S3Client, ListObjectsV2Command, PutObjectCommand, GetObjectCommand} from '@aws-sdk/client-s3'
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-
-import { auth } from "@clerk/nextjs/server";
+import { getAuthenticatedUser, createAuthError } from "@/lib/middleware";
 
 const client = new S3Client({
     credentials:{
@@ -13,17 +12,30 @@ const client = new S3Client({
 })
 
 export async function POST(req:NextRequest){
-    const body = await req.json();
-    const prefix = body.prefix;
+    try {
+        // Check authentication
+        const authUser = await getAuthenticatedUser(req);
+        if (!authUser) {
+            return createAuthError();
+        }
 
-    const command = new GetObjectCommand({
-        Bucket:"vipuls3-bucket",
-        Key: `${prefix}`
-    })
+        const body = await req.json();
+        const prefix = body.prefix;
 
-    const url = await getSignedUrl(client, command, { expiresIn:5 });
+        if (!prefix) {
+            return NextResponse.json({ error: "Missing prefix" }, { status: 400 });
+        }
 
-    // console.log(url)
+        const command = new GetObjectCommand({
+            Bucket:"vipuls3-bucket",
+            Key: `${prefix}`
+        })
 
-    return NextResponse.json({"url":url});
+        const url = await getSignedUrl(client, command, { expiresIn:5 });
+
+        return NextResponse.json({"url":url});
+    } catch (error) {
+        console.error("Error in download route:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    }
 }

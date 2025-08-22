@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import {ClerkProvider, SignedOut, SignIn, SignedIn} from '@clerk/nextjs'
-import LandingPage from "@/components/landingPage";
-import Home from "./page";
+import { AuthProvider } from '@/lib/auth-context';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,15 +13,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// export const metadata: Metadata = {
-//   title: "Store your Files Securely",
-//   description: "File Storage application",
-// };
-
-export const metadata = {
-  title: 'Store your files securely',
+export const metadata: Metadata = {
+  title: "Store your Files Securely",
+  description: "File Storage application",
 };
-
 
 export default function RootLayout({
   children,
@@ -31,18 +24,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-            <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-                <LandingPage/>
-                {/* <SignedOut>
-                  <SignIn routing="hash"/>
-                </SignedOut> */}
-                <SignedIn>
-                  <Home/>
-                </SignedIn>
-            </body>
-      </html>
-    </ClerkProvider>
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AuthProvider>
+          {children}
+        </AuthProvider>
+      </body>
+    </html>
   );
 }

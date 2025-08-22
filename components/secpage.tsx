@@ -1,3 +1,4 @@
+"use client"
 import React from 'react';
 import { TypingAnimation } from "@/components/magicui/typing-animation";
 

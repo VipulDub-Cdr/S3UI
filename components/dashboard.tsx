@@ -1,7 +1,7 @@
 "use client"
 import * as React from 'react'
 import { LoaderOneDemo } from './loader'
-import { UserButton, useUser } from "@clerk/nextjs";
+import { useAuth } from "@/lib/auth-context";
 
 import { 
     Home, 
@@ -22,7 +22,7 @@ import {
 } from 'lucide-react'
 
 const Dashboard: React.FC = () => {
-    const { isLoaded, user } = useUser();
+    const { user, token, logout } = useAuth();
     const [files, setfiles] = React.useState<string[]>([])
     const [folders, setfolders] = React.useState<string[]>([])
     const [path, setpath] = React.useState<string>("Loading...");
@@ -47,7 +47,13 @@ const Dashboard: React.FC = () => {
 
     React.useEffect(() => {
         async function fetchData() {
-            const fetchres = await fetch("/api/objects");
+            if (!token) return;
+            
+            const fetchres = await fetch("/api/objects", {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
             const res = await fetchres.json();
             setpath(res.userId)
             setfiles(res.files)
@@ -55,7 +61,7 @@ const Dashboard: React.FC = () => {
             setLoading(false);
         }
         fetchData();
-    }, [])
+    }, [token])
 
     // It calls the API and API returns the files and folders associted with the item path
     async function fetchOnClick(item: string) {
@@ -68,6 +74,7 @@ const Dashboard: React.FC = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 prefix: item,
@@ -86,6 +93,7 @@ const Dashboard: React.FC = () => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 prefix: item,
@@ -105,7 +113,10 @@ const Dashboard: React.FC = () => {
 
         const res = await fetch("/api/upload", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({
                 fileName: file.name,
                 fileType: file.type,
@@ -128,7 +139,10 @@ const Dashboard: React.FC = () => {
     async function deleteFile(item: string) {
         await fetch("/api/delete", {
             method: "DELETE",
-            headers: { "Content-Type": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                'Authorization': `Bearer ${token}`
+            },
             body: JSON.stringify({
                 "path": item,
             })
@@ -155,7 +169,7 @@ const Dashboard: React.FC = () => {
                         </div>
                         <div className='w-[70%]'>
                             <h2 className="font-semibold text-gray-900">Dashboard</h2>
-                            <p className="text-sm text-gray-500 overflow-hidden">{user?.emailAddresses[0].emailAddress}</p>
+                            <p className="text-sm text-gray-500 overflow-hidden">{user?.email}</p>
                         </div>
                     </div>
                 </div>
@@ -275,11 +289,21 @@ const Dashboard: React.FC = () => {
                         {/* userButton and Name*/}
                         <div className="flex items-center space-x-3">
                             <div className="flex items-center space-x-1">
-                                <span className="hidden sm:inline text-lg font-semibold text-gray-900">{user?.fullName}</span>
+                                <span className="hidden sm:inline text-lg font-semibold text-gray-900">{user?.name}</span>
                             </div>
 
-                            <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                                <span className="text-white text-sm font-medium"><UserButton/></span>
+                            <div className="flex items-center space-x-2">
+                                <button
+                                    onClick={logout}
+                                    className="px-3 py-1 text-sm bg-red-500 text-white rounded hover:bg-red-600 transition-colors"
+                                >
+                                    Logout
+                                </button>
+                                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <span className="text-white text-sm font-medium">
+                                        {user?.name?.charAt(0).toUpperCase()}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
